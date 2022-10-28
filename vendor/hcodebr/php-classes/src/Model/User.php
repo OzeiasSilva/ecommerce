@@ -69,7 +69,11 @@ class User extends Model {
 
 		$sql = new Sql();
 
-		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin =:LOGIN", array(
+		$results = $sql->select("
+			SELECT * 
+			FROM tb_users a 
+			INNER JOIN tb_persons b ON a.idperson = b.idperson 
+			WHERE a.deslogin = :LOGIN", array(
 			":LOGIN"=>$login
 		));
 
@@ -85,7 +89,7 @@ class User extends Model {
 
 			$user = new User();
 
-			//$data['desperson'] = utf8_encode($data['desperson']);
+			$data['desperson'] = utf8_encode($data['desperson']);
 
 			$user->setData($data);
 
@@ -345,6 +349,29 @@ class User extends Model {
 
 	}
 
+//==========================================
+	public static function setSuccess($msg) {
+
+		$_SESSION[User::SUCCESS] = $msg;
+
+	}
+
+	public static function getSuccess() {
+
+		$msg = (isset($_SESSION[User::SUCCESS]) && $_SESSION[User::SUCCESS]) ? $_SESSION[User::SUCCESS] : '';
+
+		User::clearSuccess();
+
+		return $msg;
+
+	}
+
+	public static function clearSuccess() {
+
+		$_SESSION[User::SUCCESS] = NULL;
+
+	}
+//============================================
 	public static function setErrorRegister($msg) {
 
 		$_SESSION[User::ERROR_REGISTER] = $msg;
