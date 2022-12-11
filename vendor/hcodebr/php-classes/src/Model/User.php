@@ -64,7 +64,7 @@ class User extends Model {
 		}
 
 	}
-
+	
 	public static function login($login, $password){
 
 		$sql = new Sql();
